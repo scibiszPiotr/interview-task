@@ -53,3 +53,10 @@ The invoice should contain the following fields:
 
 * Start the project by running `./start.sh`.
 * To access the container environment, use: `docker compose exec app bash`.
+
+## Explanations
+
+* The last 2 projects I took part in were based on symfony, so I forgot how to do some things in Laravel, maybe it would be easier to use e.g. DI
+* I tried to write a unit test without using db, so that these were minimal tests
+* I chose the simplest form for the price - int, in this form it doesn't offer pennies
+* Invoice has only 3 statuses, if there were more I would prepare a state machine

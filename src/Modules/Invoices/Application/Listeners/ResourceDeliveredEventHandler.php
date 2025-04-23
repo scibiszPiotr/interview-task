@@ -4,6 +4,7 @@ namespace Modules\Invoices\Application\Listeners;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Modules\Invoices\Application\Services\InvoiceService;
+use Modules\Invoices\Domain\Models\InvoiceProductLine;
 use Modules\Invoices\Domain\Repositories\InvoiceRepositoryInterface;
 use Modules\Notifications\Api\Dtos\NotifyData;
 use Modules\Notifications\Api\Events\ResourceDeliveredEvent;
@@ -16,6 +17,7 @@ class ResourceDeliveredEventHandler
         private InvoiceRepositoryInterface $invoiceRepository,
         private NotificationFacadeInterface $notificationFacade,
         private InvoiceService $invoiceService,
+        private SendInvoiceValidator $sendInvoiceValidator,
     ) {
     }
 
@@ -26,6 +28,8 @@ class ResourceDeliveredEventHandler
         } catch (ModelNotFoundException) {
             return;
         }
+
+        $this->sendInvoiceValidator->canBySend($invoice->productLines()->get());
 
         $invoice->markAsSending();
         $this->invoiceRepository->save($invoice);
